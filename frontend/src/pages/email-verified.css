@@ -1,0 +1,200 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Inter:wght@300;400;500;600&display=swap');
+
+/* ── Root shell ── */
+.ev-root {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0a0f0d;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Inter', Arial, sans-serif;
+}
+.ev-root.ev-light {
+  background: #f4f9f6;
+}
+
+/* Ambient radial glow */
+.ev-ambient {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 720px;
+  height: 720px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(82, 183, 136, 0.07) 0%, transparent 68%);
+  pointer-events: none;
+}
+.ev-light .ev-ambient {
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.09) 0%, transparent 68%);
+}
+
+/* Canvas */
+.ev-canvas {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* ── Content card ── */
+.ev-card {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  padding: 0 32px;
+  max-width: 520px;
+  width: 100%;
+}
+
+/* ── Logo ── */
+.ev-logo {
+  display: block;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 28px;
+  color: #e8f5ee;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  margin-bottom: 48px;
+  animation: ev-fade-down 0.6s 0.1s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.ev-light .ev-logo {
+  color: #1a3d2b;
+}
+.ev-logo em {
+  color: #52b788;
+  font-style: italic;
+}
+
+/* ── Animated check circle ── */
+.ev-check-wrap {
+  width: 104px;
+  height: 104px;
+  margin: 0 auto 40px;
+  position: relative;
+  animation: ev-fade-up 0.5s 0.2s both;
+}
+.ev-check-svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+  overflow: visible;
+}
+.ev-circle-track {
+  fill: none;
+  stroke: rgba(82, 183, 136, 0.12);
+  stroke-width: 2;
+}
+.ev-circle-fill {
+  fill: none;
+  stroke: #52b788;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  /* circumference of r=45 circle = 2π×45 ≈ 282.7 */
+  stroke-dasharray: 283;
+  stroke-dashoffset: 283;
+  animation: ev-draw-circle 0.75s 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@keyframes ev-draw-circle {
+  to { stroke-dashoffset: 0; }
+}
+.ev-tick-svg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(90deg) scale(0.3);
+  opacity: 0;
+  animation: ev-pop-tick 0.4s 1.0s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+@keyframes ev-pop-tick {
+  0%   { opacity: 0; transform: translate(-50%, -50%) rotate(90deg) scale(0.3); }
+  100% { opacity: 1; transform: translate(-50%, -50%) rotate(90deg) scale(1); }
+}
+
+/* ── Headline ── */
+.ev-headline {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(56px, 10vw, 80px);
+  color: #f0faf5;
+  margin: 0 0 20px;
+  line-height: 1.0;
+  font-weight: 700;
+  letter-spacing: -3px;
+  animation: ev-fade-up 0.7s 1.05s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.ev-light .ev-headline {
+  color: #1a3d2b;
+}
+
+/* ── Sub ── */
+.ev-sub {
+  font-size: 16px;
+  color: #6fa882;
+  line-height: 1.9;
+  margin: 0 0 48px;
+  font-weight: 300;
+  max-width: 380px;
+  margin-left: auto;
+  margin-right: auto;
+  animation: ev-fade-up 0.7s 1.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.ev-light .ev-sub {
+  color: #3d7258;
+}
+.ev-sub strong {
+  color: #c6e8d4;
+  font-weight: 600;
+}
+.ev-light .ev-sub strong {
+  color: #1a3d2b;
+}
+
+/* ── CTA button ── */
+.ev-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #52b788 0%, #38a169 100%);
+  color: #fff;
+  border: none;
+  padding: 18px 52px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 0.3px;
+  font-family: 'Inter', Arial, sans-serif;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  animation: ev-fade-up 0.7s 1.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.ev-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(82, 183, 136, 0.32);
+}
+.ev-btn:active {
+  transform: translateY(0);
+}
+
+/* ── Tagline ── */
+.ev-tagline {
+  font-size: 11px;
+  color: #2e4d3a;
+  margin-top: 28px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  animation: ev-fade-up 0.7s 1.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.ev-light .ev-tagline {
+  color: #7aac8e;
+}
+
+/* ── Shared keyframes ── */
+@keyframes ev-fade-up {
+  0%   { opacity: 0; transform: translateY(18px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes ev-fade-down {
+  0%   { opacity: 0; transform: translateY(-14px); }
+  100% { opacity: 1; transform: translateY(0); }
+}

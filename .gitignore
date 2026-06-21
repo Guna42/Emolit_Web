@@ -1,0 +1,32 @@
+# Dependency directories
+node_modules/
+frontend/node_modules/
+venv/
+.venv/
+__pycache__/
+*/__pycache__/
+*.pyc
+
+# Environment files and credentials (CRITICAL SAFETY)
+.env
+frontend/.env
+frontend/.env.production
+frontend/.env.development
+*.pem
+firebase-service-account.json
+
+# Scratch and test files containing secrets
+scratch/
+test*.py
+test*.mjs
+test_api_out.txt
+*.log
+
+# Builds and tarballs
+frontend/build/
+*.tar.gz
+
+# DB dumps and logs
+db_out.json
+db_out_20.json
+response.json

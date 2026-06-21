@@ -1,0 +1,250 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   APP NAVBAR — Landing-aligned dark; refined light (tokens mirror landing.css)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.app-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  pointer-events: none;
+  padding-bottom: 1rem;
+  transition: color 0.35s ease;
+}
+
+/* ── Scrolled backdrop bar (both themes) ── */
+.app-navbar__backdrop {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    height 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.35s ease;
+  z-index: 0;
+}
+
+.app-navbar--scrolled .app-navbar__backdrop {
+  height: 5.5rem;
+  opacity: 0;
+}
+
+@media (min-width: 768px) {
+  .app-navbar--scrolled .app-navbar__backdrop {
+    height: 6rem;
+  }
+}
+
+[data-theme='light'] .app-navbar__backdrop {
+  background: transparent;
+  border-bottom: none;
+  box-shadow: none;
+}
+
+[data-theme='dark'] .app-navbar__backdrop {
+  background: transparent;
+  border-bottom: none;
+  box-shadow: none;
+}
+
+.app-navbar__inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  .app-navbar__inner {
+    padding: 1.25rem 3rem;
+  }
+}
+
+/* Logo hover ring — dark */
+[data-theme='dark'] .app-navbar .group\/logo > div.absolute {
+  background: radial-gradient(circle, rgba(82, 183, 136, 0.2) 0%, transparent 70%) !important;
+}
+
+/* ── Icon dock (pill) ── */
+[data-theme='light'] .app-navbar__pill {
+  background: rgba(255, 255, 255, 0.72) !important;
+  border-color: rgba(255, 255, 255, 0.55) !important;
+  box-shadow:
+    0 8px 32px rgba(15, 23, 42, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95) !important;
+  --tw-ring-color: rgba(226, 232, 240, 0.9) !important;
+}
+
+[data-theme='light'] .app-navbar--scrolled .app-navbar__pill {
+  background: rgba(255, 255, 255, 0.92) !important;
+  box-shadow: 0 12px 36px rgba(15, 23, 42, 0.08) !important;
+}
+
+[data-theme='dark'] .app-navbar__pill {
+  background: rgba(255, 255, 255, 0.035) !important;
+  border-color: rgba(255, 255, 255, 0.09) !important;
+  box-shadow:
+    0 8px 36px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
+  --tw-ring-color: rgba(82, 183, 136, 0.12) !important;
+}
+
+[data-theme='dark'] .app-navbar__pill:hover {
+  background: rgba(255, 255, 255, 0.055) !important;
+  border-color: rgba(82, 183, 136, 0.2) !important;
+}
+
+/* ── Nav icon buttons ── */
+[data-theme='dark'] .app-navbar__navlink:not(.app-navbar__navlink--active) {
+  background: rgba(0, 0, 0, 0.25) !important;
+  border-color: rgba(255, 255, 255, 0.07) !important;
+  color: rgba(255, 255, 255, 0.42) !important;
+  --tw-ring-color: rgba(255, 255, 255, 0.06) !important;
+}
+
+[data-theme='dark'] .app-navbar__navlink:not(.app-navbar__navlink--active):hover {
+  color: #95d5b2 !important;
+  border-color: rgba(82, 183, 136, 0.35) !important;
+  box-shadow: 0 8px 24px rgba(82, 183, 136, 0.12) !important;
+}
+
+[data-theme='dark'] .app-navbar__navlink--active {
+  background: linear-gradient(145deg, #52b788 0%, #2d6a4f 100%) !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  color: #ffffff !important;
+  box-shadow:
+    0 10px 32px rgba(82, 183, 136, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
+  --tw-ring-color: rgba(82, 183, 136, 0.35) !important;
+}
+
+[data-theme='dark'] .app-navbar__navtip {
+  background: rgba(17, 26, 20, 0.95) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  color: rgba(255, 255, 255, 0.65) !important;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* ── Avatar + dropdown ── */
+[data-theme='dark'] .app-navbar__avatar {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35) !important;
+  --tw-ring-color: rgba(82, 183, 136, 0.15) !important;
+}
+
+[data-theme='dark'] .app-navbar__avatar:hover {
+  border-color: rgba(82, 183, 136, 0.35) !important;
+}
+
+[data-theme='dark'] .app-navbar__dropdown {
+  background: rgba(14, 22, 18, 0.96) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(82, 183, 136, 0.08) !important;
+}
+
+[data-theme='dark'] .app-navbar__dropdown .border-slate-100\/50 {
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+[data-theme='dark'] .app-navbar__dropdown .text-slate-400 {
+  color: rgba(255, 255, 255, 0.45) !important;
+}
+
+[data-theme='dark'] .app-navbar__dropdown .text-slate-900 {
+  color: #f8fafc !important;
+}
+
+[data-theme='dark'] .app-navbar__dropdown button.text-rose-500 {
+  color: #fda4af !important;
+}
+
+[data-theme='dark'] .app-navbar__dropdown button.text-rose-500:hover {
+  background: rgba(244, 63, 94, 0.12) !important;
+}
+
+/* ── Theme toggle slot ── */
+[data-theme='dark'] .app-navbar__theme-slot {
+  border-left-color: rgba(255, 255, 255, 0.1) !important;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+}
+
+[data-theme='light'] .app-navbar__theme-slot {
+  border-left-color: rgba(226, 232, 240, 0.95) !important;
+}
+
+/* ── Mobile burger ── */
+[data-theme='dark'] .app-navbar__burger {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  color: #f1f5f9 !important;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35) !important;
+}
+
+/* ── Mobile sheet (full screen) ── */
+[data-theme='dark'] .app-navbar__sheet {
+  background: linear-gradient(168deg, #080d0a 0%, #030806 45%, #050a08 100%) !important;
+}
+
+[data-theme='dark'] .app-navbar__sheet .bg-indigo-500\/5 {
+  background: rgba(82, 183, 136, 0.06) !important;
+}
+
+[data-theme='dark'] .app-navbar__sheet .bg-emerald-500\/5 {
+  background: rgba(82, 183, 136, 0.05) !important;
+}
+
+[data-theme='dark'] .app-navbar__sheet .text-slate-900 {
+  color: #f8fafc !important;
+}
+
+[data-theme='dark'] .app-navbar__sheet .bg-slate-50 {
+  background: rgba(255, 255, 255, 0.06) !important;
+  color: #e2e8f0 !important;
+}
+
+[data-theme='dark'] .app-navbar__sheet .flex.items-center.gap-4 > .rounded-lg.bg-slate-900 {
+  background: linear-gradient(135deg, #1b4332, #2d6a4f) !important;
+  box-shadow: 0 8px 28px rgba(82, 183, 136, 0.2) !important;
+}
+
+[data-theme='dark'] .app-navbar__sheet a.rounded-3xl.bg-slate-900 {
+  background: linear-gradient(135deg, #1b4332 0%, #2d6a4f 100%) !important;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(82, 183, 136, 0.15) !important;
+}
+
+[data-theme='dark'] .app-navbar__sheet .text-slate-400 {
+  color: rgba(255, 255, 255, 0.48) !important;
+}
+
+[data-theme='dark'] .app-navbar__sheet .hover\:bg-slate-50:hover {
+  background: rgba(255, 255, 255, 0.06) !important;
+  color: #f8fafc !important;
+}
+
+[data-theme='dark'] .app-navbar__usercard {
+  background: rgba(255, 255, 255, 0.04) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+[data-theme='dark'] .app-navbar__usercard .text-slate-900 {
+  color: #f8fafc !important;
+}
+
+[data-theme='dark'] .app-navbar__usercard .bg-white {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+[data-theme='dark'] .app-navbar__usercard .text-slate-700 {
+  color: #e2e8f0 !important;
+}

@@ -1,0 +1,195 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   🌑  EMOLIT — PREMIUM DARK THEME
+   The elite dark green/black matching the Landing Page experience
+   ════════════════════════════════════════════════════════════════════════════ */
+
+/* ─── DARK MODE DESIGN TOKENS (Match Landing Page) ─── */
+:root[data-theme="dark"] {
+  /* Base surfaces — deep obsidian green */
+  --dm-bg-base: #080D0A;
+  --dm-bg-surface: #0d1510;
+  --dm-bg-card: rgba(255,255,255,0.028);
+  --dm-bg-card-solid: #111a14;
+  --dm-bg-elevated: rgba(27,67,50,0.15);
+  --dm-bg-input: rgba(0,0,0,0.2);
+
+  /* Borders */
+  --dm-border: rgba(255,255,255,0.06);
+  --dm-border-strong: rgba(255,255,255,0.08);
+  --dm-border-accent: rgba(82,183,136,0.25);
+  --dm-card-border: rgba(255,255,255,0.08);
+
+  /* Text */
+  --dm-text-primary: #ffffff;
+  --dm-text-secondary: rgba(255,255,255,0.55);
+  --dm-text-muted: rgba(255,255,255,0.35);
+
+  /* Accents */
+  --dm-primary: #52B788;
+  --dm-primary-dk: #2D6A4F;
+  --dm-primary-ddk: #1B4332;
+  --dm-gold: #D4AF37;
+  
+  --dm-primary-glow: rgba(82,183,136,0.15);
+  --dm-primary-glow-strong: rgba(82,183,136,0.25);
+  --dm-gold-glow: rgba(212,175,55,0.15);
+
+  /* Shadows */
+  --dm-shadow-sm: 0 4px 18px rgba(0,0,0,0.2);
+  --dm-shadow-md: 0 8px 36px rgba(0,0,0,0.4);
+  --dm-shadow-xl: 0 20px 60px rgba(0,0,0,0.6);
+  --dm-shadow-glow: 0 8px 28px rgba(82,183,136,0.28);
+}
+
+/* ══════════════════════════════════════════
+   GLOBAL DARK OVERRIDES
+══════════════════════════════════════════ */
+[data-theme="dark"] body {
+  background-color: var(--dm-bg-base) !important;
+  color: var(--dm-text-primary) !important;
+  background-image: none !important; /* Will add specific radial gradients where needed */
+}
+
+/* ══════════════════════════════════════════
+   TAILWIND UTILITY OVERRIDES FOR DARK THEME
+   Fixes hardcoded light theme colors on pages
+══════════════════════════════════════════ */
+[data-theme="dark"] .bg-white {
+  background-color: var(--dm-bg-card) !important;
+  border-color: var(--dm-border) !important;
+}
+
+[data-theme="dark"] .bg-slate-50,
+[data-theme="dark"] .bg-slate-100 {
+  background-color: var(--dm-bg-card) !important;
+  border-color: var(--dm-border) !important;
+}
+
+[data-theme="dark"] .text-slate-900,
+[data-theme="dark"] .text-slate-800 {
+  color: var(--dm-text-primary) !important;
+}
+
+[data-theme="dark"] .text-slate-700,
+[data-theme="dark"] .text-slate-600 {
+  color: var(--dm-text-secondary) !important;
+}
+
+[data-theme="dark"] .text-slate-500,
+[data-theme="dark"] .text-slate-400 {
+  color: var(--dm-text-muted) !important;
+}
+
+[data-theme="dark"] .border-slate-100,
+[data-theme="dark"] .border-slate-200 {
+  border-color: var(--dm-border) !important;
+}
+
+/* ────── SUPER SMOOTH THEME BACKGROUND TRANSITION ────── */
+.mirror-bg {
+  position: relative;
+  min-height: 100vh;
+}
+
+.mirror-bg::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: -1;
+  background:
+    radial-gradient(ellipse 90% 55% at 50% -15%, rgba(82, 183, 136, 0.1) 0%, transparent 52%),
+    radial-gradient(ellipse 70% 50% at 100% 70%, rgba(27, 67, 50, 0.22) 0%, transparent 50%),
+    linear-gradient(172deg, #030806 0%, #080d0a 40%, #050a08 100%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+[data-theme="dark"] .mirror-bg::before {
+  opacity: 1;
+}
+
+[data-theme="dark"] .mirror-bg {
+  background: transparent !important;
+}
+
+/* Scrollbar */
+[data-theme="dark"] ::-webkit-scrollbar-track { background: var(--dm-bg-base); }
+[data-theme="dark"] ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.08); border-radius: 10px; }
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover { background: var(--dm-primary); }
+
+/* Login / register styling lives in login-page.css (scoped .login-shell). */
+
+
+/* ══════════════════════════════════════════
+   🎛️ THEME TOGGLE BUTTON STYLES (Match Landing)
+══════════════════════════════════════════ */
+.theme-toggle-btn {
+  width: 48px; 
+  height: 26px; 
+  border-radius: 100px; 
+  border: none; 
+  cursor: pointer;
+  position: relative; 
+  display: flex; 
+  align-items: center;
+  transition: background 0.3s, transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  padding: 0;
+  outline: 1px solid rgba(82,183,136,0.12); /* Light border */
+}
+
+.theme-toggle-btn:hover { transform: scale(1.06); }
+.theme-toggle-btn:active { transform: scale(0.96); }
+
+/* LIGHT track */
+.theme-toggle-light {
+  background: #e2e8f0;
+  outline-color: #cbd5e1;
+}
+
+/* DARK track */
+.theme-toggle-dark {
+  background: rgba(255,255,255,0.08); /* --card-border from landing */
+  outline-color: rgba(82,183,136,0.12);
+}
+
+/* THUMB */
+.theme-toggle-thumb {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  transition: all 0.35s cubic-bezier(.34,1.56,.64,1);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 10;
+}
+
+.theme-toggle-light .theme-toggle-thumb {
+  left: calc(100% - 23px);
+  background: #10b981;
+}
+
+.theme-toggle-dark .theme-toggle-thumb {
+  left: 3px;
+  background: #52B788; /* --primary */
+}
+
+/* ICONS */
+.theme-icon {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 12px;
+  height: 12px;
+  color: white;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 15;
+}
+
+/* In the original landing page, the knob itself has the icon */
+.sun-icon { left: calc(100% - 19px); color: white; }
+.moon-icon { left: 7px; color: white; }
+
+.icon-visible { opacity: 1; transform: scale(1) rotate(0deg); }
+.icon-hidden { opacity: 0; transform: scale(0.4) rotate(90deg); pointer-events: none; }
