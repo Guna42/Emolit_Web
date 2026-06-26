@@ -484,6 +484,9 @@ const JournalPage: React.FC = () => {
             <div className="relative flex-1">
               <textarea
                 ref={textareaRef}
+                id="journal-entry"
+                name="journal-entry"
+                aria-label="Journal entry text"
                 value={entry}
                 onChange={(e) => setEntry(e.target.value)}
                 placeholder={isRecording ? 'Listening to your neural frequency...' : 'Start anchoring your thoughts...'}
