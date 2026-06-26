@@ -499,6 +499,11 @@ class JournalService:
             "reflection_question": "If your heart could speak, what would it say right now?",
             "regulation_suggestion": regulation_suggestion or "Take a slow, deep breath. You are safe here.",
             "ruler": {
+                "section_1": recognize,
+                "section_2": understand,
+                "section_3": label,
+                "section_4": express,
+                "section_5": regulate,
                 "Recognize": recognize,
                 "Understand": understand,
                 "Label": label,
@@ -662,6 +667,11 @@ class JournalService:
             "reflection_question": "Can you feel your breath moving in and out, just for a moment?",
             "regulation_suggestion": "Rest your hands on your lap and let your shoulders drop.",
             "ruler": {
+                "section_1": "I can feel the heavy weather in your heart right now.",
+                "section_2": "You've been through a lot, and it makes sense to feel this way.",
+                "section_3": "A quiet moment of reflection.",
+                "section_4": "It is okay to give yourself permission to just be, for a little while.",
+                "section_5": "Breathe in peace and let the heavy thoughts drift away.",
                 "Recognize": "I can feel the heavy weather in your heart right now.",
                 "Understand": "You've been through a lot, and it makes sense to feel this way.",
                 "Label": "A quiet moment of reflection.",
