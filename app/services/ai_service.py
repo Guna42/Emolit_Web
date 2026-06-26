@@ -369,9 +369,10 @@ class MissingFieldsError(Exception):
 
 
 class JournalService:
-    def __init__(self, ai_client: AIClient, emotion_index: EmotionIndex) -> None:
+    def __init__(self, ai_client: AIClient, emotion_index: EmotionIndex, fallback_client: Optional[AIClient] = None) -> None:
         self.ai_client = ai_client
         self.emotion_index = emotion_index
+        self.fallback_client = fallback_client
 
     def analyze_entry(self, entry: str) -> Dict[str, Any]:
         """Analyze a journal entry with deep intelligence."""
@@ -409,7 +410,7 @@ class JournalService:
             )
             
             if "error" in result:
-                return result
+                raise Exception(f"AI Client error: {result['error']}")
 
             try:
                 # Primary validation
@@ -421,7 +422,26 @@ class JournalService:
                 return self._validate_response(repaired)
 
         except Exception as e:
-            logger.error(f"❌ Emotional Engine Error: {str(e)}", exc_info=True)
+            logger.error(f"❌ Primary Emotional Engine Error: {str(e)}", exc_info=True)
+            
+            # Try with fallback client if available
+            if getattr(self, "fallback_client", None):
+                logger.info(f"🔄 Switching to fallback provider: {self.fallback_client.provider}")
+                try:
+                    result = self.fallback_client.generate(
+                        entry=entry,
+                        allowed_words_text=self.emotion_index.allowed_words_text
+                    )
+                    if "error" not in result:
+                        try:
+                            return self._validate_response(result)
+                        except (MissingFieldsError, InvalidEmotionError) as fe:
+                            logger.warning(f"⚠️ Fallback Response Repair Triggered: {str(fe)}")
+                            repaired = self._repair_missing_fields(result, entry)
+                            return self._validate_response(repaired)
+                except Exception as fe:
+                    logger.error(f"❌ Fallback Emotional Engine Error: {str(fe)}", exc_info=True)
+
             # Final fallback so the UI doesn't crash
             fallback_data = self._repair_missing_fields({"detected_emotions": self._fallback_emotions(entry)}, entry)
             return self._validate_response(fallback_data)
@@ -736,15 +756,34 @@ _journal_service: Optional[JournalService] = None
 def get_journal_service() -> JournalService:
     global _journal_service
     if _journal_service is None:
+        provider = os.getenv("AI_PROVIDER", "").strip().lower()
         anthropic_key = os.getenv("ANTHROPIC_API_KEY", "")
         openai_key = os.getenv("OPENAI_API_KEY", "")
 
-        if anthropic_key:
-            ai_client = AIClient(api_key=anthropic_key, provider="anthropic")
-        elif openai_key:
+        # 1. Determine main provider
+        if provider == "openai" and openai_key:
             ai_client = AIClient(api_key=openai_key, provider="openai")
+        elif provider == "anthropic" and anthropic_key:
+            ai_client = AIClient(api_key=anthropic_key, provider="anthropic")
         else:
-            raise HTTPException(status_code=500, detail="No AI API key found (ANTHROPIC_API_KEY or OPENAI_API_KEY).")
+            # Fallback to default priority order
+            if anthropic_key:
+                ai_client = AIClient(api_key=anthropic_key, provider="anthropic")
+            elif openai_key:
+                ai_client = AIClient(api_key=openai_key, provider="openai")
+            else:
+                raise HTTPException(status_code=500, detail="No AI API key found (ANTHROPIC_API_KEY or OPENAI_API_KEY).")
         
-        _journal_service = JournalService(ai_client=ai_client, emotion_index=_emotion_index)
+        # 2. Determine backup/fallback provider
+        fallback_client = None
+        if ai_client.provider == "anthropic" and openai_key:
+            fallback_client = AIClient(api_key=openai_key, provider="openai")
+        elif ai_client.provider == "openai" and anthropic_key:
+            fallback_client = AIClient(api_key=anthropic_key, provider="anthropic")
+
+        _journal_service = JournalService(
+            ai_client=ai_client, 
+            emotion_index=_emotion_index,
+            fallback_client=fallback_client
+        )
     return _journal_service
