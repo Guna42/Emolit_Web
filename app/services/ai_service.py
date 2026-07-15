@@ -260,7 +260,7 @@ class AIClient:
             if env_anthropic_model:
                 self.model = env_anthropic_model
             elif not model or model == "gpt-4o-mini":
-                self.model = "claude-3-5-sonnet-20240620"
+                self.model = "claude-sonnet-4-6"
         else:
             base_url = os.getenv("OPENAI_BASE_URL", "").strip() or None
             env_model = os.getenv("OPENAI_MODEL", "").strip()
