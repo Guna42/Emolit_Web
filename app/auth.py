@@ -46,6 +46,9 @@ if not firebase_admin._apps:
         try:
             import json
             creds_dict = json.loads(firebase_creds_json.strip())
+            # Replace escaped newlines with actual newlines in private key
+            if "private_key" in creds_dict:
+                creds_dict["private_key"] = creds_dict["private_key"].replace("\\n", "\n")
             cred = credentials.Certificate(creds_dict)
             firebase_admin.initialize_app(cred)
             logger.info("✅ Firebase Admin initialized with FIREBASE_CREDENTIALS environment variable.")

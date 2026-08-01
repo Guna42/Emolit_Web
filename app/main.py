@@ -154,8 +154,8 @@ if os.path.exists(build_dir):
     # Mount static assets for /static (root path compatibility)
     app.mount("/static", StaticFiles(directory=os.path.join(build_dir, "static")), name="static")
 
-@app.get("/emolit/{catchall:path}")
-@app.get("/{catchall:path}")
+@app.api_route("/emolit/{catchall:path}", methods=["GET", "HEAD"])
+@app.api_route("/{catchall:path}", methods=["GET", "HEAD"])
 async def serve_react_app(catchall: str = ""):
     if not os.path.exists(build_dir):
         return JSONResponse(status_code=404, content={"message": "Frontend build directory not found. Please compile the React project."})
