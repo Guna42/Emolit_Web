@@ -48,7 +48,10 @@ if not firebase_admin._apps:
             creds_dict = json.loads(firebase_creds_json.strip())
             # Replace escaped newlines with actual newlines in private key
             if "private_key" in creds_dict:
-                creds_dict["private_key"] = creds_dict["private_key"].replace("\\n", "\n")
+                pk = creds_dict["private_key"]
+                # Safe logging without printing secret content
+                logger.info(f"🔑 Key Metadata: length={len(pk)}, starts_with_header={pk.startswith('-----BEGIN')}, newlines={pk.count(chr(10))}, escaped_newlines={pk.count(r'\n')}")
+                creds_dict["private_key"] = pk.replace("\\n", "\n")
             cred = credentials.Certificate(creds_dict)
             firebase_admin.initialize_app(cred)
             logger.info("✅ Firebase Admin initialized with FIREBASE_CREDENTIALS environment variable.")
