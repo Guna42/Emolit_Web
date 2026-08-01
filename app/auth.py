@@ -50,8 +50,10 @@ if not firebase_admin._apps:
             if "private_key" in creds_dict:
                 pk = creds_dict["private_key"]
                 escaped_count = pk.count(r"\n")
+                import hashlib
+                h = hashlib.sha256(pk.encode("utf-8")).hexdigest()
                 # Safe logging without printing secret content
-                logger.info(f"🔑 Key Metadata: length={len(pk)}, starts_with_header={pk.startswith('-----BEGIN')}, newlines={pk.count(chr(10))}, escaped_newlines={escaped_count}")
+                logger.info(f"🔑 Key Metadata: length={len(pk)}, starts_with_header={pk.startswith('-----BEGIN')}, newlines={pk.count(chr(10))}, escaped_newlines={escaped_count}, sha256={h}")
                 creds_dict["private_key"] = pk.replace("\\n", "\n")
             cred = credentials.Certificate(creds_dict)
             firebase_admin.initialize_app(cred)
