@@ -71,7 +71,9 @@ function saveReminders(list: ScheduledReminder[]) {
 
 // ── API helper ────────────────────────────────────────────────────────────────
 
-const API_BASE = process.env.NODE_ENV === 'development' ? 'http://127.0.0.1:8005' : '';
+const API_BASE = process.env.REACT_APP_API_URL || (
+  process.env.NODE_ENV === 'development' ? 'http://127.0.0.1:8005' : ''
+);
 
 async function callSendEmailReminder(stepText: string, stepNumber: number): Promise<boolean> {
   // Always read the freshest token — AuthContext refreshes it every 55 min.

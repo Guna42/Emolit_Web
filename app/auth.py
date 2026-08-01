@@ -37,18 +37,32 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
 # ─── Firebase Admin Setup ─────────────────────────────────────────────────────
-# This expects 'firebase-service-account.json' to be in the project root.
-# You can generate this from: Firebase Console → Project Settings → Service accounts
+# This expects 'firebase-service-account.json' or 'FIREBASE_CREDENTIALS' env.
 service_account_path = os.getenv("FIREBASE_SERVICE_ACCOUNT_PATH", "firebase-service-account.json")
 
 if not firebase_admin._apps:
-    if os.path.exists(service_account_path):
+    firebase_creds_json = os.getenv("FIREBASE_CREDENTIALS")
+    if firebase_creds_json:
+        try:
+            import json
+            creds_dict = json.loads(firebase_creds_json.strip())
+            cred = credentials.Certificate(creds_dict)
+            firebase_admin.initialize_app(cred)
+            logger.info("✅ Firebase Admin initialized with FIREBASE_CREDENTIALS environment variable.")
+        except Exception as env_e:
+            logger.error(f"❌ Failed to initialize Firebase from environment JSON: {env_e}")
+            if os.path.exists(service_account_path):
+                cred = credentials.Certificate(service_account_path)
+                firebase_admin.initialize_app(cred)
+                logger.info(f"✅ Firebase Admin initialized with certificate: {service_account_path}")
+            else:
+                logger.warning(f"⚠️ WARNING: Firebase service credentials not found. Verification will fail.")
+                firebase_admin.initialize_app()
+    elif os.path.exists(service_account_path):
         cred = credentials.Certificate(service_account_path)
         firebase_admin.initialize_app(cred)
         logger.info(f"✅ Firebase Admin initialized with certificate: {service_account_path}")
     else:
-        # Fallback for dev if service account is not yet provided
-        # BUT verification will fail without it.
         logger.warning(f"⚠️ WARNING: {service_account_path} not found. Firebase verification will fail.")
         firebase_admin.initialize_app()
 

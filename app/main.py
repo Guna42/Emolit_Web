@@ -22,6 +22,28 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Strip API prefixes middleware for backward compatibility and cross-domain routing
+@app.middleware("http")
+async def strip_api_prefixes(request: Request, call_next):
+    path = request.url.path
+    modified = False
+    new_path = path
+    
+    if path.startswith("/mobile-api"):
+        new_path = path[len("/mobile-api"):]
+        modified = True
+    elif path.startswith("/api/"):
+        new_path = path[len("/api"):]
+        modified = True
+        
+    if modified:
+        if not new_path:
+            new_path = "/"
+        request.scope["path"] = new_path
+        
+    response = await call_next(request)
+    return response
+
 # Shared Dependencies
 from app.database import Database, get_collection
 from app.auth import get_current_user
