@@ -140,3 +140,34 @@ app.include_router(notifications_router)
 @app.get("/health")
 def health():
     return {"status": "online", "sync": "active", "cwd": os.getcwd(), "file": __file__, "routes": [getattr(r, "path", str(r)) for r in app.routes]}
+
+
+# ─── Serve React Web Frontend (Unified Architecture) ───────────────────────────
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import HTMLResponse, FileResponse
+
+build_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "frontend", "build")
+
+if os.path.exists(build_dir):
+    # Mount static assets for /emolit/static (old subpath compatibility)
+    app.mount("/emolit/static", StaticFiles(directory=os.path.join(build_dir, "static")), name="emolit_static")
+    # Mount static assets for /static (root path compatibility)
+    app.mount("/static", StaticFiles(directory=os.path.join(build_dir, "static")), name="static")
+
+@app.get("/emolit/{catchall:path}")
+@app.get("/{catchall:path}")
+async def serve_react_app(catchall: str = ""):
+    if not os.path.exists(build_dir):
+        return JSONResponse(status_code=404, content={"message": "Frontend build directory not found. Please compile the React project."})
+    
+    clean_path = catchall
+    if catchall.startswith("emolit/"):
+        clean_path = catchall[len("emolit/"):]
+    elif catchall == "emolit":
+        clean_path = ""
+        
+    asset_path = os.path.join(build_dir, clean_path)
+    if clean_path and os.path.exists(asset_path) and os.path.isfile(asset_path):
+        return FileResponse(asset_path)
+        
+    return FileResponse(os.path.join(build_dir, "index.html"))
