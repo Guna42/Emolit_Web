@@ -54,6 +54,9 @@ if not firebase_admin._apps:
                 h = hashlib.sha256(pk.encode("utf-8")).hexdigest()
                 # Safe logging without printing secret content
                 logger.info(f"🔑 Key Metadata: length={len(pk)}, starts_with_header={pk.startswith('-----BEGIN')}, newlines={pk.count(chr(10))}, escaped_newlines={escaped_count}, sha256={h}")
+                # Safe snippet logging to inspect escape formatting
+                snippet = pk[:40] + "..." + pk[-40:] if len(pk) > 80 else pk
+                logger.info(f"🔑 Key Snippet: {repr(snippet)}")
                 creds_dict["private_key"] = pk.replace("\\n", "\n")
             cred = credentials.Certificate(creds_dict)
             firebase_admin.initialize_app(cred)
